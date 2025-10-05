@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dashboard_screen.dart'; 
-import 'signup_screen.dart';   
+import 'dashboard_screen.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -40,23 +40,30 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Warna latar belakang agar sesuai dengan dashboard
+      backgroundColor: Colors.green.shade50,
+
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // 🖼️ Ganti ikon toko dengan gambar logo
+                // Logo toko buah
                 Image.asset(
-                  'assets/images/logo.png', // lokasi logo kamu
-                  height: 120, // tinggi gambar
+                  'assets/images/logo.png',
+                  height: 120,
                 ),
                 const SizedBox(height: 20),
 
                 // Judul halaman login
                 const Text(
-                  'Login Toko Buah',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  'Login Toko Buah Albara',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
                 ),
                 const SizedBox(height: 30),
 
@@ -65,9 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
-                    border: OutlineInputBorder(
+                    labelStyle: TextStyle(color: Colors.green.shade700),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green.shade600),
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green.shade300),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    prefixIcon:
+                        Icon(Icons.person, color: Colors.green.shade600),
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -78,9 +93,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(
+                    labelStyle: TextStyle(color: Colors.green.shade700),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green.shade600),
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green.shade300),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    prefixIcon:
+                        Icon(Icons.lock, color: Colors.green.shade600),
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -89,17 +112,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.green.shade600,
                     minimumSize: const Size(double.infinity, 45),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    elevation: 3,
                   ),
-                  child: const Text('Masuk'),
+                  child: const Text(
+                    'Masuk',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 15),
 
-                // Tombol untuk pindah ke halaman daftar
+                // Garis pemisah atau dekorasi kecil
+                Row(
+                  children: const [
+                    Expanded(child: Divider(thickness: 1)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('atau'),
+                    ),
+                    Expanded(child: Divider(thickness: 1)),
+                  ],
+                ),
+                const SizedBox(height: 10),
+
+                // Tombol menuju halaman daftar
                 TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -107,8 +147,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => SignUpScreen()),
                     );
                   },
-                  child: const Text('Belum punya akun? Daftar di sini'),
-                )
+                  child: Text(
+                    'Belum punya akun? Daftar di sini',
+                    style: TextStyle(
+                      color: Colors.green.shade700,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
