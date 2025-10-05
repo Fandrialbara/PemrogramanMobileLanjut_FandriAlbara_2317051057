@@ -1,0 +1,39 @@
+name: myapp
+description: "Aplikasi Jual Buah Segar menggunakan Flutter"
+publish_to: 'none' # private project, tidak akan dipublish ke pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Paket ikon gaya iOS
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Rekomendasi linting (cek gaya penulisan kode)
+  flutter_lints: ^5.0.0
+
+flutter:
+  # Aktifkan ikon material design bawaan Flutter
+  uses-material-design: true
+
+  # =============================
+  #  ASET GAMBAR APLIKASI
+  # =============================
+  assets:
+    - assets/images/logo.png
+    - assets/images/apel.png
+    - assets/images/pisang.png
+    - assets/images/jeruk.png
+    - assets/images/semangka.png
+    - assets/images/melon.png
+    - assets/images/mangga.png
+    - assets/images/anggur.png
