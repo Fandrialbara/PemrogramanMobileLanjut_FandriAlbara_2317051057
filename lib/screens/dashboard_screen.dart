@@ -16,10 +16,8 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Warna latar belakang halaman
       backgroundColor: Colors.green.shade50,
 
-      // Bagian AppBar di atas layar
       appBar: AppBar(
         title: const Text(
           'Toko Buah Albara',
@@ -28,12 +26,10 @@ class DashboardScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.green,
         actions: [
-          // Tombol logout di AppBar
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Keluar',
             onPressed: () {
-              // Aksi keluar: kembali ke halaman login
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -43,12 +39,11 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
 
-      // Bagian utama halaman (body)
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header atau banner toko
+            // Header toko
             Container(
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(20),
@@ -67,8 +62,8 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Column(
-                children: const [
+              child: const Column(
+                children: [
                   Text(
                     'Selamat Datang di Toko Buah Albara!',
                     style: TextStyle(
@@ -87,7 +82,7 @@ class DashboardScreen extends StatelessWidget {
               ),
             ),
 
-            // Bagian daftar buah, menggunakan GridView agar tampilan lebih menarik
+            // Grid daftar buah
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: GridView.builder(
@@ -95,105 +90,83 @@ class DashboardScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: fruits.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Dua kolom
-                  crossAxisSpacing: 12, // Jarak antar kolom
-                  mainAxisSpacing: 12, // Jarak antar baris
-                  childAspectRatio: 0.8, // Perbandingan ukuran item
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.8,
                 ),
                 itemBuilder: (context, index) {
                   final buah = fruits[index];
-                  return GestureDetector(
-                    onTap: () {
-                      // Menampilkan notifikasi saat item ditekan
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              'Kamu memilih ${buah['nama']} seharga Rp${buah['harga']}'),
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(0, 3),
+                          blurRadius: 6,
                         ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            buah['gambar'],
+                            width: 90,
+                            height: 90,
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Gambar buah dari folder assets
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              buah['gambar'],
-                              width: 90,
-                              height: 90,
-                              fit: BoxFit.cover,
-                            ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          buah['nama'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
-                          const SizedBox(height: 10),
-
-                          // Nama buah
-                          Text(
-                            buah['nama'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.center,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Rp ${buah['harga']} /kg',
+                          style: TextStyle(
+                            color: Colors.green.shade700,
+                            fontWeight: FontWeight.w500,
                           ),
-
-                          const SizedBox(height: 5),
-
-                          // Harga buah
-                          Text(
-                            'Rp ${buah['harga']} /kg',
-                            style: TextStyle(
-                              color: Colors.green.shade700,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Tombol beli
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              // Tampilkan notifikasi saat tombol beli ditekan
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Kamu membeli ${buah['nama']} seharga Rp${buah['harga']}'),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.shopping_cart, size: 18),
-                            label: const Text('Beli'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Kamu membeli ${buah['nama']} seharga Rp${buah['harga']}'),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 6,
-                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.shopping_cart, size: 18, color: Colors.white),
+                          label: const Text(
+                            'Beli',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade600,
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 },
               ),
             ),
-
             const SizedBox(height: 16),
           ],
         ),
