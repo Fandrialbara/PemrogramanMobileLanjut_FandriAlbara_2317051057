@@ -30,6 +30,7 @@ flutter:
   # =============================
   assets:
     - assets/images/logo.png
+    - assets/images/profile.jpg
     - assets/images/apel.png
     - assets/images/pisang.png
     - assets/images/jeruk.png
