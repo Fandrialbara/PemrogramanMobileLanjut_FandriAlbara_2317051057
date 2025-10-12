@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Judul halaman login
                 const Text(
-                  'Login Toko Buah Albara',
+                  'Silahkan Login atau Daftar',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,

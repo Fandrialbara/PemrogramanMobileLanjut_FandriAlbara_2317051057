@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import 'profile_screen.dart'; // Import halaman profil
+import 'profile_screen.dart'; // import halaman profil
 
 class DashboardScreen extends StatelessWidget {
-  // Daftar buah: berisi nama, harga, gambar, dan deskripsi singkat
+  // Daftar buah: nama, harga, gambar, deskripsi singkat
   final List<Map<String, dynamic>> fruits = [
     {
       'nama': 'Apel Merah',
@@ -49,13 +49,95 @@ class DashboardScreen extends StatelessWidget {
     },
   ];
 
+  // Fungsi untuk menampilkan dialog input jumlah pembelian
+  void _tampilDialogBeli(BuildContext context, Map<String, dynamic> buah) {
+    final TextEditingController jumlahController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Beli ${buah['nama']}"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Harga per kg: Rp ${buah['harga']}"),
+            const SizedBox(height: 10),
+            TextField(
+              controller: jumlahController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: "Masukkan jumlah (kg)",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Batal"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              int jumlah = int.tryParse(jumlahController.text) ?? 0;
+              if (jumlah <= 0) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Masukkan jumlah yang valid!")),
+                );
+                return;
+              }
+              int total = buah['harga'] * jumlah;
+              Navigator.pop(context);
+              _tampilKonfirmasi(context, buah, jumlah, total);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: const Text("Lanjut"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Fungsi menampilkan konfirmasi pembayaran
+  void _tampilKonfirmasi(
+      BuildContext context, Map<String, dynamic> buah, int jumlah, int total) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Konfirmasi Pembelian"),
+        content: Text(
+          "Nama Buah: ${buah['nama']}\n"
+          "Jumlah: $jumlah kg\n"
+          "Total Harga: Rp $total",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Batal"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(
+                        "Pembelian ${buah['nama']} sebanyak $jumlah kg berhasil!")),
+              );
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: const Text("Bayar Sekarang"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Warna latar belakang dashboard
       backgroundColor: Colors.green.shade50,
 
-      // AppBar (judul dan tombol di atas)
+      // AppBar di bagian atas halaman
       appBar: AppBar(
         title: const Text(
           'Toko Buah Albara',
@@ -75,7 +157,8 @@ class DashboardScreen extends StatelessWidget {
               );
             },
           ),
-          // Tombol logout
+
+          // Tombol logout (kembali ke login)
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Keluar',
@@ -89,12 +172,12 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
 
-      // Isi halaman utama
+      // Bagian utama (daftar buah)
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header toko
+            // Header toko di atas daftar buah
             Container(
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(20),
@@ -137,18 +220,17 @@ class DashboardScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(), // satu scroll dengan halaman
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: fruits.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // dua kolom
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.78, // rasio dikit di-tweak untuk proporsi baru
+                  childAspectRatio: 0.85,
                 ),
                 itemBuilder: (context, index) {
                   final buah = fruits[index];
-
                   return Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -161,102 +243,74 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                    // Padding dalam kartu agar tampilan lega
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          // Gambar: pakai ClipRRect dengan rounding hanya di bagian atas
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
-                              bottomLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                            ),
-                            // Container agar bisa mengatur ukuran dan alignment gambar
-                            child: Container(
-                              height: 110, // tinggi gambar proporsional
-                              width: double.infinity,
-                              color: Colors.grey.shade100, // latar sementara bila gambar transparan
-                              child: Image.asset(
-                                buah['gambar'],
-                                fit:
-                                    BoxFit.contain, // tampilkan seluruh gambar, jangan crop
-                                alignment: Alignment.center,
-                              ),
-                            ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Gambar buah
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            buah['gambar'],
+                            width: 110, // sedikit lebih kecil agar proporsional
+                            height: 110,
+                            fit: BoxFit.contain, // agar gambar tidak terpotong
                           ),
-                          const SizedBox(height: 10),
+                        ),
+                        const SizedBox(height: 8),
 
-                          // Nama buah
-                          Text(
-                            buah['nama'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
+                        // Nama buah
+                        Text(
+                          buah['nama'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+
+                        // Harga buah
+                        Text(
+                          'Rp ${buah['harga']} /kg',
+                          style: TextStyle(
+                            color: Colors.green.shade700,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
+                        ),
+
+                        // Deskripsi singkat
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          child: Text(
+                            buah['deskripsi'],
                             textAlign: TextAlign.center,
-                          ),
-
-                          // Harga buah
-                          Text(
-                            'Rp ${buah['harga']} /kg',
-                            style: TextStyle(
-                              color: Colors.green.shade700,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black54,
                             ),
                           ),
+                        ),
 
-                          // Deskripsi singkat, dibatasi 2 baris agar rapi
-                          Padding(
+                        // Tombol beli
+                        ElevatedButton.icon(
+                          onPressed: () => _tampilDialogBeli(context, buah),
+                          icon: const Icon(Icons.shopping_cart,
+                              size: 18, color: Colors.white),
+                          label: const Text(
+                            'Beli',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade600,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 6),
-                            child: Text(
-                              buah['deskripsi'],
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                                horizontal: 16, vertical: 6),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-
-                          const Spacer(), // dorong tombol ke bawah agar konsisten
-
-                          // Tombol Beli
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Kamu membeli ${buah['nama']} seharga Rp${buah['harga']}',
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.shopping_cart,
-                                size: 18, color: Colors.white),
-                            label: const Text(
-                              'Beli',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade600,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 6),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 },
