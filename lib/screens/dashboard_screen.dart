@@ -3,12 +3,14 @@ import 'login_screen.dart';
 import 'profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // Menyimpan index halaman aktif di bottom nav
 
   // Daftar buah dengan nama, harga, gambar, dan deskripsi
   final List<Map<String, dynamic>> fruits = [
@@ -60,7 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // ==============================
-      //  APPBAR (Judul & tombol kanan)
+      //  APPBAR (Judul Aplikasi)
       // ==============================
       appBar: AppBar(
         title: const Text(
@@ -69,32 +71,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         centerTitle: true,
         backgroundColor: Colors.green,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            tooltip: 'Profil',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Keluar',
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            },
-          ),
-        ],
       ),
 
       // ==============================
-      //  BODY UTAMA
+      //  BODY (Isi Utama Halaman)
       // ==============================
       body: Container(
         // Gradient di seluruh background halaman
@@ -109,7 +89,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header toko
+              // ==============================
+              // HEADER TOKO
+              // ==============================
               Container(
                 margin: const EdgeInsets.all(16),
                 padding: const EdgeInsets.all(20),
@@ -148,7 +130,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
 
-              // GridView daftar buah
+              // ==============================
+              // GRIDVIEW DAFTAR BUAH
+              // ==============================
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GridView.builder(
@@ -305,11 +289,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           showDialog(
                                             context: context,
                                             builder: (_) => AlertDialog(
-                                              shape:
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
                                               title: const Text(
                                                   'Pembayaran Berhasil!'),
                                               content: Text(
