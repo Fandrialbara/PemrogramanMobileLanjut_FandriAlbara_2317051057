@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
 
-      // 🔹 Halaman pertama dijalankan saat aplikasi dibuka
+      // Halaman pertama dijalankan saat aplikasi dibuka
       initialRoute: '/splash',
 
-      // 🔹 Daftar rute urut dari Splash → Login → SignUp → Dashboard
+      // Daftar rute urut dari Splash → Login → SignUp → Dashboard
       routes: {
         '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),

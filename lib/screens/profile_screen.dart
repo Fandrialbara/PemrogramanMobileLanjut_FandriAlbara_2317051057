@@ -4,22 +4,24 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Warna latar belakang 
+      // Warna latar belakang halaman profil
       backgroundColor: Colors.green.shade50,
 
+      // AppBar di bagian atas halaman
       appBar: AppBar(
-        title: const Text('Profil Saya'),
-        centerTitle: true,
-        backgroundColor: Colors.green,
+        title: const Text('Profil Saya'), // Judul AppBar
+        centerTitle: true, // Menempatkan judul di tengah
+        backgroundColor: Colors.green, // Warna AppBar disesuaikan tema
       ),
 
+      // Body utama yang bisa di-scroll agar responsif di berbagai layar
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Foto profil (diambil dari folder assets)
+            // Foto profil pengguna dari folder assets
             CircleAvatar(
-              radius: 60,
+              radius: 60, // Ukuran lingkaran foto
               backgroundImage: const AssetImage('assets/images/profile.jpg'),
               backgroundColor: Colors.green.shade100,
             ),
@@ -46,13 +48,14 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 25),
 
-            // Informasi detail pengguna
+            // Kotak berisi detail informasi pribadi pengguna
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white, // Latar putih agar teks jelas terbaca
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: const [
+                  // Efek bayangan agar tampilan lebih elegan
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 5,
@@ -60,10 +63,12 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
+
+              // Informasi pribadi dalam bentuk ListTile agar rapi
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  // Judul informasi
+                  // Judul untuk bagian informasi pribadi
                   Text(
                     'Informasi Pribadi',
                     style: TextStyle(
@@ -72,24 +77,24 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.green,
                     ),
                   ),
-                  Divider(color: Colors.green),
+                  Divider(color: Colors.green), // Garis pemisah
                   SizedBox(height: 10),
 
-                  // Email pengguna
+                  // Baris informasi email
                   ListTile(
                     leading: Icon(Icons.email, color: Colors.green),
                     title: Text('Email'),
                     subtitle: Text('jarjit@gmail.com'),
                   ),
 
-                  // Nomor telepon pengguna
+                  // Baris informasi nomor telepon
                   ListTile(
                     leading: Icon(Icons.phone, color: Colors.green),
                     title: Text('Nomor Telepon'),
                     subtitle: Text('+62 812-1233-2345'),
                   ),
 
-                  // Alamat pengguna
+                  // Baris informasi alamat
                   ListTile(
                     leading: Icon(Icons.location_on, color: Colors.green),
                     title: Text('Alamat'),
@@ -100,10 +105,10 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // Tombol Edit Profil
+            // Tombol untuk mengedit profil (belum aktif)
             ElevatedButton.icon(
               onPressed: () {
-                // Untuk tampilan saja, belum berfungsi
+                // Menampilkan pesan sementara menggunakan SnackBar
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Fitur edit profil belum tersedia'),
@@ -120,10 +125,10 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green.shade600,
-                minimumSize: const Size(double.infinity, 45),
+                backgroundColor: Colors.green.shade600, // Warna tombol
+                minimumSize: const Size(double.infinity, 45), // Lebar penuh
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10), // Sudut membulat
                 ),
               ),
             ),

@@ -11,7 +11,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Timer selama 7 detik sebelum berpindah otomatis ke halaman login
+    // Timer selama 7 detik sebelum otomatis pindah ke halaman login
     Timer(const Duration(seconds: 7), () {
       Navigator.pushReplacement(
         context,
@@ -23,48 +23,52 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Warna latar belakang lembut agar selaras dengan tema hijau
+      // Warna latar belakang 
       backgroundColor: Colors.green.shade50,
 
+      // SingleChildScrollView untuk mencegah overflow di layar kecil
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo aplikasi diperbesar agar terlihat jelas dan menarik
-            Image.asset(
-              'assets/images/logo.png',
-              height: 180, // sebelumnya 120 → diperbesar agar lebih menonjol
-            ),
-
-            const SizedBox(height: 30), // beri jarak lebih lega di bawah logo
-
-            // Nama aplikasi (judul utama)
-            const Text(
-              'Toko Buah Albara',
-              style: TextStyle(
-                fontSize: 28, // sedikit diperbesar agar seimbang dengan logo
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo aplikasi 
+              Image.asset(
+                'assets/images/logo.png',
+                height: 200, // 
               ),
-            ),
 
-            const SizedBox(height: 12),
+              const SizedBox(height: 30), // jarak di bawah logo
 
-            // Tagline toko (subjudul)
-            const Text(
-              'Segar setiap hari, penuh vitamin alami',
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.black54,
-                fontStyle: FontStyle.italic,
+              // Nama aplikasi
+              const Text(
+                'Toko Buah Albara',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 35),
+              const SizedBox(height: 12),
 
-            // Indikator loading animasi
-            const CircularProgressIndicator(color: Colors.green),
-          ],
+              // Tagline toko 
+              const Text(
+                'Segar setiap hari, penuh vitamin alami',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black54,
+                  fontStyle: FontStyle.italic,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 40),
+
+              // Indikator loading animasi agar pengguna tahu sedang loading
+              const CircularProgressIndicator(color: Colors.green),
+            ],
+          ),
         ),
       ),
     );
