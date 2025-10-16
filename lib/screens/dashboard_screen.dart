@@ -85,6 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
+        // [FIXED] Tambahkan SingleChildScrollView agar semua konten bisa discroll dan tidak overflow
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -136,8 +137,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                  physics:
+                      const NeverScrollableScrollPhysics(), // [FIXED] Biar scroll hanya di SingleChildScrollView
+                  shrinkWrap:
+                      true, // [FIXED] Biar GridView menyesuaikan tinggi isinya
                   itemCount: fruits.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -165,15 +168,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize:
+                            MainAxisSize.min, // [FIXED] biar tinggi Column pas
                         children: [
                           // Gambar buah
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.asset(
                               buah['gambar'],
-                              width: 110,
-                              height: 110,
-                              fit: BoxFit.contain, // agar gambar tidak terpotong
+                              width: 100, // [FIXED] dikurangi sedikit biar muat
+                              height: 100,
+                              fit: BoxFit.contain,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -209,6 +214,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 fontSize: 12,
                                 color: Colors.black54,
                               ),
+                              maxLines: 2, // [FIXED] biar teks tidak overflow
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
 
@@ -234,7 +241,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         int total = jumlah * harga;
 
                                         return Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisSize:
+                                              MainAxisSize.min, // [FIXED]
                                           children: [
                                             Text(
                                                 'Kamu akan membeli ${buah['nama']} sebanyak:'),
@@ -358,12 +366,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()),
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
             );
           } else if (index == 2) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
             );
           }
         },
